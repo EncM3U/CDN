@@ -1,0 +1,96 @@
+name: auto-deploy
+
+on:
+  push:
+    branches: 
+      - master
+  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true  # Fetch Hugo themes
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+     
+      - name: Deploy to gh-pages (keep existing files)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          keep_files: true
+          force_orphan: false
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to dolby-vision
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc/dolby-vision
+          publish_branch: dolby-vision  
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to dolby-atmos
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc/dolby-atmos
+          publish_branch: dolby-atmos  
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to huawei-p40pro (demo)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc/huawei-p40pro
+          publish_branch: huawei-p40pro
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to LittleWitchAcademia (小魔女学园)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc/Little-Witch-Academia
+          publish_branch: LittleWitchAcademia
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to YOSLMIZ (春物)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc/YOSLMIZ
+          publish_branch: YOSLMIZ
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to Nexus2019 （奈克萨斯思想者大会2019）
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc/Nexus2019
+          publish_branch: Nexus2019
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+          
