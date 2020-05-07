@@ -19,7 +19,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc
+          publish_dir: ./
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
           keep_files: true
@@ -30,7 +30,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/dolby-vision
+          publish_dir: ./dolby-vision
           publish_branch: dolby-vision  
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
@@ -41,7 +41,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/dolby-atmos
+          publish_dir: ./dolby-atmos
           publish_branch: dolby-atmos  
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
@@ -52,7 +52,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/huawei-p40pro
+          publish_dir: ./huawei-p40pro
           publish_branch: huawei-p40pro
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
@@ -63,7 +63,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/Little-Witch-Academia
+          publish_dir: ./Little-Witch-Academia
           publish_branch: LittleWitchAcademia
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
@@ -74,7 +74,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/YOSLMIZ
+          publish_dir: ./YOSLMIZ
           publish_branch: YOSLMIZ
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
@@ -85,7 +85,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/Nexus2019
+          publish_dir: ./Nexus2019
           publish_branch: Nexus2019
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
