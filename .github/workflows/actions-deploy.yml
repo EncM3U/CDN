@@ -86,7 +86,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./Fate-Stay-Night-HF-1
-          publish_branch: Fate-Stay-Night-HF-1
+          publish_branch: FateStayNightHF1
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
           force_orphan: true
