@@ -81,5 +81,16 @@ jobs:
           force_orphan: true
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to Fate-Stay-Night-HF-1
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Fate-Stay-Night-HF-1
+          publish_branch: Fate-Stay-Night-HF-1
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
 
           
