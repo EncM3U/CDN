@@ -15,13 +15,35 @@ jobs:
           submodules: true  # Fetch Hugo themes
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
           
-          
-      - name: Deploy to FateStayNightHF1
+
+      - name: Deploy to LittleWitchAcademia (小魔女学园)
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./Fate-Stay-Night-HF-1
-          publish_branch: FateStayNightHF1
+          publish_dir: ./Little-Witch-Academia
+          publish_branch: LittleWitchAcademia
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to YOSLMIZ (春物)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./YOSLMIZ
+          publish_branch: YOSLMIZ
+          cname: cdn.mochanbw.cn
+          allow_empty_commit: true
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy to Nexus2019 （奈克萨斯思想者大会2019）
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Nexus2019
+          publish_branch: Nexus2019
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
           force_orphan: true
@@ -55,39 +77,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./huawei-p40pro
           publish_branch: huawei-p40pro
-          cname: cdn.mochanbw.cn
-          allow_empty_commit: true
-          force_orphan: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-      - name: Deploy to LittleWitchAcademia (小魔女学园)
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./Little-Witch-Academia
-          publish_branch: LittleWitchAcademia
-          cname: cdn.mochanbw.cn
-          allow_empty_commit: true
-          force_orphan: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-      - name: Deploy to YOSLMIZ (春物)
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./YOSLMIZ
-          publish_branch: YOSLMIZ
-          cname: cdn.mochanbw.cn
-          allow_empty_commit: true
-          force_orphan: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-      - name: Deploy to Nexus2019 （奈克萨斯思想者大会2019）
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./Nexus2019
-          publish_branch: Nexus2019
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
           force_orphan: true
