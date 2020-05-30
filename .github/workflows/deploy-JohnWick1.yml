@@ -15,12 +15,12 @@ jobs:
           submodules: true  # Fetch Hugo themes
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
-      - name: Deploy to FateStayNightHF1
+      - name: Deploy to JohnWick1
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./Fate-Stay-Night-HF-1
-          publish_branch: FateStayNightHF1
+          publish_dir: ./JohnWick1
+          publish_branch: JohnWick1
           cname: cdn.mochanbw.cn
           allow_empty_commit: true
           force_orphan: true
