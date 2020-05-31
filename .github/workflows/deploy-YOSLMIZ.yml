@@ -1,4 +1,4 @@
-name: auto-deploy
+name: yoslmiz
 
 on:
   push:
