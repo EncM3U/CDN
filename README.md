@@ -16,6 +16,11 @@ For HLS(recommend):
 ```bash
 ffmpeg -i foo.mp4 -c:v h264_nvenc -b:v 3680k -maxrate 4000k -minrate 2000k -pix_fmt yuv420p -preset slow -c:a aac -b:a 320k -hls_time 5 -hls_list_size 0 -f hls index.m3u8
 ```
+
 ```bash
 ffmpeg -y -i input -c:v h264_nvenc -pix_fmt yuv420p -preset slow -b:v 6000k -pass 1 -an -f mp4 NUL && ffmpeg -i input -c:v h264_nvenc -preset slow -b:v 6000k -maxrate 8000k -minrate 2000k -pass 2 -c:a aac -b:a 320k -hls_time 5 -hls_list_size 0 -f hls index.m3u8
+```
+
+```bash
+for %a in ("*.flac") do ffmpeg -i "%a" -b:a 320k "%~na.mp3" && for %a in ("*.mp3") do ffmpeg -i "%a" "%~na.jpg"
 ```
