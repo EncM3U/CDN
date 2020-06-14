@@ -22,5 +22,5 @@ ffmpeg -y -i input -c:v h264_nvenc -pix_fmt yuv420p -preset slow -b:v 6000k -pas
 ```
 
 ```bash
-for %a in ("*.flac") do ffmpeg -i "%a" -b:a 320k "%~na.mp3" && for %a in ("*.mp3") do ffmpeg -i "%a" "%~na.jpg"
+for %a in ("*.flac") do ffmpeg -i "%a" -b:a 1000k "%~na.mp3" && for %a in ("*.mp3") do ffmpeg -i "%a" "%~na.jpg"
 ```
