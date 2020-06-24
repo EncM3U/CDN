@@ -1,8 +1,10 @@
-#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import time
 import os
 import re
+import chardet
+
+#print(chardet.detect(str.encode(s)))
 print("Author: https://github.com/MoChanBW/\n", "v2.0.3 ", "on 2020/6/14")
 base = input(
     "请输入远程仓库目录\n(默认为'https://cdn.jsdelivr.net/gh/MoChanBW/CDN@latest/APlayer/'):\n")
