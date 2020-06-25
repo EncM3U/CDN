@@ -30,7 +30,7 @@ for files in dirs:
             'url': base+matchObj.group(),
             'cover': base+matchObj.group().replace("mp3", "jpg"),
             'lrc': base+matchObj.group().replace("mp3", "lrc"),
-            'theme': '#ebd0c2'
+           
         }
         strs = strs + str(data) + ","
         k += 1
@@ -47,27 +47,50 @@ for files in dirs:
             'url': base+matchObj.group(),
             'cover': base+matchObj.group().replace("mp3", "jpg"),
             'lrc': base+matchObj.group().replace("mp3", "lrc"),
-            'theme': '#ebd0c2'
+
         }
         strs = strs + str(data) + ","
         k += 1
 if k != 0:
-    js = "const ap = new APlayer({\
-    container: document.getElementById('aplayer'),\
-    mini: false,\
-    fixed: false,\
-    autoplay: false,\
-    theme: '#FADFA3',\
-    loop: 'all',\
-    order: 'random',\
-    preload: 'auto',\
-    volume: 0.7,\
-    mutex: true,\
-    listFolded: false,\
-    listMaxHeight: 90,\
-    lrcType: 3,\
-    audio: ["+strs+"]\
-    });"
+    js = """const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    mini: false,
+    fixed: false,
+    autoplay: true,
+    theme: '#FADFA3',
+    loop: 'all',
+    order: 'random',
+    preload: 'auto',
+    volume: 0.7,
+    mutex: true,
+    listFolded: false,
+    listMaxHeight: 90,
+    lrcType: 3,
+    audio: ["+strs+"]
+    });
+    const colorThief = new ColorThief();
+const image = new Image();
+const xhr = new XMLHttpRequest();
+const setTheme = (index) => {
+    if (!ap.list.audios[index].theme) {
+        xhr.onload = function(){
+            let coverUrl = URL.createObjectURL(this.response);
+            image.onload = function(){
+                let color = colorThief.getColor(image);
+                ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
+                URL.revokeObjectURL(coverUrl)
+            };
+            image.src = coverUrl;
+        }
+        xhr.open('GET', ap.list.audios[index].cover, true);
+        xhr.responseType = 'blob';
+        xhr.send();
+    }
+};
+setTheme(ap.list.index);
+ap.on('listswitch', (index) => {
+    setTheme(index);
+});"""
     f = open('aplayerMainController.js', mode='w', encoding='utf8')
     f.write(js)
     f.close()
