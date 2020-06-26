@@ -202,7 +202,7 @@ def probe(dirs):
                     "format"]["filename"])
                 # print("size:", json.loads(subp.communicate()[0])["format"]["size"])
             except KeyError:
-                print(matchObj)
+                print("[Warning!]KeyError Caught at",matchObj)
                 if int(json.loads(subp.communicate()[0])["format"]["size"]) < 20971520:
                     KeObj=re.match(r'(.*) - (.*?).mp3', matchObj, re.M | re.I)
                     if KeObj:
@@ -274,13 +274,13 @@ def probe(dirs):
 
 def main():
     dirs = os.listdir(os.getcwd())
-    i = input("是否自动生成js?(Y/n):")
+    i = input("需要自动生成APlayer使用的js吗?(Y/n):")
     if i not in "Nn" or i == "":
         allMusicInDict = probe(dirs)
         musicConverter(allMusicInDict)
     lrcEncodingConvertToUTF8(dirs)
     input("按回车键退出...\n")
-    print("那,再见咯！")
+    print("呐,再见咯！")
     exit(0)
 
 
