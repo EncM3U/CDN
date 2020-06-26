@@ -7,7 +7,7 @@ import json
 import chardet
 import PySimpleGUI as sg
 
-print("Author: https://github.com/MoChanBW/", "v4.0.0 ", "on 2020/6/26")
+print("Author: https://github.com/MoChanBW/", "v4.0.1 ", "on 2020/6/26")
 
 
 def musicConverter(allMusicInDict):
@@ -24,8 +24,8 @@ def musicConverter(allMusicInDict):
             command = "ffmpeg -i "+'"'+allMusicInDict[keys]["Name"]+'"'+' -b:a 300k "' + \
                 allMusicInDict[keys]["Name"].replace(
                     ".mp3", "")+'(300k).mp3"'
-            print("以300k码率重编码",keys)
-            #print(command)
+            print("以300k码率重编码", keys)
+            # print(command)
             subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE, encoding="utf-8")
             time.sleep(8)  # 等ffmpeg运行
@@ -98,7 +98,15 @@ def musicConverter(allMusicInDict):
         f = open('aplayerMainController.js', mode='w', encoding='utf-8')
         f.write(js)
         f.close()
-        print("\n工作完毕！写入", k, "首歌曲\n\n输出的JS文件为: ", f.name)
+        jsfixed = js.replace("fixed: false", "fixed: true")
+        js = ""
+        jsfixed = jsfixed.replace("autoplay: true", "autoplay: false")
+        fixed = open('aplayerMainFixedController.js',
+                     mode='w', encoding='utf-8')
+        fixed.write(jsfixed)
+        jsfixed = ""
+        fixed.close()
+        print("\n工作完毕！写入", k, "首歌曲\n\n输出的JS文件为: ", f.name, "和", fixed.name)
     else:
         print("\n没有找到符合条件的歌曲文件喵~\n")
 
@@ -202,9 +210,10 @@ def probe(dirs):
                     "format"]["filename"])
                 # print("size:", json.loads(subp.communicate()[0])["format"]["size"])
             except KeyError:
-                print("[Warning!]KeyError Caught at",matchObj)
+                print("[Warning!]KeyError Caught at", matchObj)
                 if int(json.loads(subp.communicate()[0])["format"]["size"]) < 20971520:
-                    KeObj=re.match(r'(.*) - (.*?).mp3', matchObj, re.M | re.I)
+                    KeObj = re.match(r'(.*) - (.*?).mp3',
+                                     matchObj, re.M | re.I)
                     if KeObj:
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
@@ -215,7 +224,8 @@ def probe(dirs):
                         #print("returnDict: ",returnDict)
                         return returnDict
                 else:
-                    KeObj=re.match(r'(.*) - (.*?).mp3', matchObj, re.M | re.I)
+                    KeObj = re.match(r'(.*) - (.*?).mp3',
+                                     matchObj, re.M | re.I)
                     if KeObj:
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
@@ -245,7 +255,7 @@ def probe(dirs):
                 #print("returnDict: ",returnDict)
                 return returnDict
         else:
-            cmd(command, sleep,matchObj)  # 错误就重来
+            cmd(command, sleep, matchObj)  # 错误就重来
 
     k = 0
     allDict = {}
