@@ -7,7 +7,7 @@ import json
 import chardet
 import PySimpleGUI as sg
 
-print("Author: https://github.com/MoChanBW/\n", "v3.0.0 ", "on 2020/6/25")
+print("Author: https://github.com/MoChanBW/", "v4.0.0 ", "on 2020/6/26")
 
 
 def musicConverter(allMusicInDict):
@@ -21,8 +21,11 @@ def musicConverter(allMusicInDict):
     # {theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean},theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean}}
     for keys in allMusicInDict:
         if allMusicInDict[keys]["Slice"]:
-            command="ffmpeg -i "+'"'+allMusicInDict[keys]["Name"]+'"'+' -b:a 300k "'+ allMusicInDict[keys]["Name"].replace(".mp3","")+'(ffmpeg).mp3"'
-            print(command)
+            command = "ffmpeg -i "+'"'+allMusicInDict[keys]["Name"]+'"'+' -b:a 300k "' + \
+                allMusicInDict[keys]["Name"].replace(
+                    ".mp3", "")+'(300k).mp3"'
+            print("以300k码率重编码",keys)
+            #print(command)
             subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE, encoding="utf-8")
             time.sleep(8)  # 等ffmpeg运行
@@ -31,7 +34,7 @@ def musicConverter(allMusicInDict):
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
-                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3","")+'(ffmpeg).mp3"',
+                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(300k).mp3"',
                     'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
                     'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
                 }
@@ -39,14 +42,14 @@ def musicConverter(allMusicInDict):
                 k += 1
                 print(allMusicInDict[keys]["Name"])
                 print(data)
-                    
+
         else:
             data = {
-            'name': keys,
-            'artist': allMusicInDict[keys]["Artist"],
-            'url': base+allMusicInDict[keys]["Name"],
-            'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
-            'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                'name': keys,
+                'artist': allMusicInDict[keys]["Artist"],
+                'url': base+allMusicInDict[keys]["Name"],
+                'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
             }
             strs = strs + str(data) + ","
             k += 1
@@ -116,7 +119,7 @@ def lrcEncodingConvertToUTF8(dirs):
                 if enc == "utf-8":
                     p += 1
                 else:
-                    
+
                     allfail = False
                     try:  # 尝试用chardet检测出的编码来解码
                         lr = open(matchObj.group(), mode='r', encoding=enc)
@@ -126,7 +129,7 @@ def lrcEncodingConvertToUTF8(dirs):
                         print("\n[Warning!] UnicodeDecodeError at",
                               matchObj.group(), ',try decoding it manually...')
                         enc = ""
-                        
+
                         for encmanually in ["ansi", "gbk", "gb2312", "utf-8", "euc-jp", "utf-16", "gb18030"]:
                             try:
                                 print("    Try decoding the lrc file by",
@@ -182,21 +185,47 @@ def lrcEncodingConvertToUTF8(dirs):
 
 
 def probe(dirs):
-    def cmd(command, sleep):
+    def cmd(command, sleep, matchObj):
         subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, encoding="utf-8")
         time.sleep(sleep)  # 等ffprobe运行
         if subp.poll() == 0:
             # print(subp.communicate()[0])
             # print("title:", json.loads(subp.communicate()[0])["format"]["tags"]["title"])
-            theTitle = str(json.loads(subp.communicate()[0])[
-                "format"]["tags"]["title"])
-            # print("artist:", json.loads(subp.communicate()[0])["format"]["tags"]["artist"])
-            theArtist = str(json.loads(subp.communicate()[0])[
-                "format"]["tags"]["artist"])
-            theName = str(json.loads(subp.communicate()[0])[
-                "format"]["filename"])
-            # print("size:", json.loads(subp.communicate()[0])["format"]["size"])
+            try:
+                theTitle = str(json.loads(subp.communicate()[0])[
+                    "format"]["tags"]["title"])
+                # print("artist:", json.loads(subp.communicate()[0])["format"]["tags"]["artist"])
+                theArtist = str(json.loads(subp.communicate()[0])[
+                    "format"]["tags"]["artist"])
+                theName = str(json.loads(subp.communicate()[0])[
+                    "format"]["filename"])
+                # print("size:", json.loads(subp.communicate()[0])["format"]["size"])
+            except KeyError:
+                print(matchObj)
+                if int(json.loads(subp.communicate()[0])["format"]["size"]) < 20971520:
+                    KeObj=re.match(r'(.*) - (.*?).mp3', matchObj, re.M | re.I)
+                    if KeObj:
+                        subdict = {}
+                        subdict["Artist"] = KeObj.group(1)
+                        subdict["Name"] = KeObj.group(2)
+                        subdict["Slice"] = False
+                        returnDict = {}
+                        returnDict[KeObj.group(2)] = subdict
+                        #print("returnDict: ",returnDict)
+                        return returnDict
+                else:
+                    KeObj=re.match(r'(.*) - (.*?).mp3', matchObj, re.M | re.I)
+                    if KeObj:
+                        subdict = {}
+                        subdict["Artist"] = KeObj.group(1)
+                        subdict["Name"] = KeObj.group(2)
+                        subdict["Slice"] = True
+                        returnDict = {}
+                        returnDict[KeObj.group(2)] = subdict
+                        #print("returnDict: ",returnDict)
+                        return returnDict
+
             if int(json.loads(subp.communicate()[0])["format"]["size"]) < 20971520:
                 subdict = {}
                 subdict["Artist"] = theArtist
@@ -216,7 +245,7 @@ def probe(dirs):
                 #print("returnDict: ",returnDict)
                 return returnDict
         else:
-            cmd(command, sleep)  # 错误就重来
+            cmd(command, sleep,matchObj)  # 错误就重来
 
     k = 0
     allDict = {}
@@ -228,7 +257,8 @@ def probe(dirs):
             # theReturn={theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean}}
             theReturn = None
             while theReturn == None:
-                theReturn = cmd(command, 0.4)#theReturn 有时会变为空值,
+                # theReturn 有时会变为空值,
+                theReturn = cmd(command, 0.4, matchObj.group())
             try:
                 for name in theReturn:
                     allDict[name] = theReturn[name]
@@ -236,14 +266,16 @@ def probe(dirs):
             except TypeError:
                 print(theReturn)
                 input("TypeError...Please press Enter and retry...")
+            except:
+                print("Unknown Error...")
     #print("allDict:", allDict)
     return allDict
 
 
 def main():
     dirs = os.listdir(os.getcwd())
-    i=input("是否自动生成js?(Y/n):")
-    if i not in "Nn" or i=="":
+    i = input("是否自动生成js?(Y/n):")
+    if i not in "Nn" or i == "":
         allMusicInDict = probe(dirs)
         musicConverter(allMusicInDict)
     lrcEncodingConvertToUTF8(dirs)
