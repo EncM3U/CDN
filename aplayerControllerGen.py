@@ -217,7 +217,7 @@ def probe(dirs):
                     if KeObj:
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
-                        subdict["Name"] = KeObj.group(2)
+                        subdict["Name"] = KeObj.group(0)
                         subdict["Slice"] = False
                         returnDict = {}
                         returnDict[KeObj.group(2)] = subdict
@@ -229,7 +229,7 @@ def probe(dirs):
                     if KeObj:
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
-                        subdict["Name"] = KeObj.group(2)
+                        subdict["Name"] = KeObj.group(0)
                         subdict["Slice"] = True
                         returnDict = {}
                         returnDict[KeObj.group(2)] = subdict
