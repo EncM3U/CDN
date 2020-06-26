@@ -103,6 +103,7 @@ def musicConverter(allMusicInDict):
 def lrcEncodingConvertToUTF8(dirs):
     k = 0
     p = 0
+    numfailed = 0
     da = input("要将lrc文件编码转换为utf-8吗？(Y/n):")
     if da not in "Nn" or da == "":
         print("开始转换咯！")
@@ -115,7 +116,7 @@ def lrcEncodingConvertToUTF8(dirs):
                 if enc == "utf-8":
                     p += 1
                 else:
-                    numfailed = 0
+                    
                     allfail = False
                     try:  # 尝试用chardet检测出的编码来解码
                         lr = open(matchObj.group(), mode='r', encoding=enc)
