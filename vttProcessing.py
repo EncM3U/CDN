@@ -4,6 +4,8 @@ import time
 import os
 import re
 #print("Author: https://github.com/MoChanBW/\n", "v2.0.3 ", "on 2020/6/14")
+
+print("合并'*{num}.vtt'为单个index.vtt文件")
 print("请在vtt文件目录内运行本程序...3秒后开始处理")
 print("\n按Ctrl+C终止操作")
 time.sleep(3)
