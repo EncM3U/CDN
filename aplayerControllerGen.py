@@ -21,10 +21,10 @@ def musicConverter(allMusicInDict):
     # {theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean},theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean}}
     for keys in allMusicInDict:
         if allMusicInDict[keys]["Slice"]:
-            command = "ffmpeg -i "+'"'+allMusicInDict[keys]["Name"]+'"'+' -b:a 300k "' + \
+            command = "ffmpeg -i "+'"'+allMusicInDict[keys]["Name"]+'"'+' -b:a 280k --maxrate 300k "' + \
                 allMusicInDict[keys]["Name"].replace(
-                    ".mp3", "")+'(300k).mp3"'
-            print("以300k码率重编码", keys)
+                    ".mp3", "")+'(280k).mp3"'
+            print("以280k码率重编码", keys)
             # print(command)
             subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE, encoding="utf-8")
@@ -34,7 +34,7 @@ def musicConverter(allMusicInDict):
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
-                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(300k).mp3"',
+                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3"',
                     'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
                     'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
                 }
