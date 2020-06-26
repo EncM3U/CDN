@@ -18,17 +18,39 @@ def musicConverter(allMusicInDict):
     time.sleep(1)
     strs = ""
     k = 0
+    # {theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean},theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean}}
     for keys in allMusicInDict:
-        data = {
-                'name': matchObj.group(2),
-                'artist': matchObj.group(1),
-                'url': base+matchObj.group(),
-                'cover': base+matchObj.group().replace("mp3", "jpg"),
-                'lrc': base+matchObj.group().replace("mp3", "lrc"),
-        }
+        if allMusicInDict[keys]["Slice"]:
+            command="ffmpeg -i "+'"'+allMusicInDict[keys]["Name"]+'"'+' -b:a 300k "'+ allMusicInDict[keys]["Name"].replace(".mp3","")+'(ffmpeg).mp3"'
+            print(command)
+            subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE, encoding="utf-8")
+            time.sleep(8)  # 等ffmpeg运行
+            if subp.poll() == 0:
+                print(subp.communicate()[0])
+                data = {
+                    'name': keys,
+                    'artist': allMusicInDict[keys]["Artist"],
+                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3","")+'(ffmpeg).mp3"',
+                    'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                    'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                }
+                strs = strs + str(data) + ","
+                k += 1
+                print(allMusicInDict[keys]["Name"])
+                print(data)
+                    
+        else:
+            data = {
+            'name': keys,
+            'artist': allMusicInDict[keys]["Artist"],
+            'url': base+allMusicInDict[keys]["Name"],
+            'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+            'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+            }
             strs = strs + str(data) + ","
             k += 1
-    
+
     if k != 0:
         js = """
         var ap = new APlayer({
@@ -93,6 +115,8 @@ def lrcEncodingConvertToUTF8(dirs):
                 if enc == "utf-8":
                     p += 1
                 else:
+                    numfailed = 0
+                    allfail = False
                     try:  # 尝试用chardet检测出的编码来解码
                         lr = open(matchObj.group(), mode='r', encoding=enc)
                         data = lr.read(-1)
@@ -100,9 +124,8 @@ def lrcEncodingConvertToUTF8(dirs):
                         lr.close()
                         print("\n[Warning!] UnicodeDecodeError at",
                               matchObj.group(), ',try decoding it manually...')
-                        allfail = False
                         enc = ""
-                        numfailed = 0
+                        
                         for encmanually in ["ansi", "gbk", "gb2312", "utf-8", "euc-jp", "utf-16", "gb18030"]:
                             try:
                                 print("    Try decoding the lrc file by",
@@ -170,49 +193,62 @@ def probe(dirs):
             # print("artist:", json.loads(subp.communicate()[0])["format"]["tags"]["artist"])
             theArtist = str(json.loads(subp.communicate()[0])[
                 "format"]["tags"]["artist"])
+            theName = str(json.loads(subp.communicate()[0])[
+                "format"]["filename"])
             # print("size:", json.loads(subp.communicate()[0])["format"]["size"])
             if int(json.loads(subp.communicate()[0])["format"]["size"]) < 20971520:
                 subdict = {}
                 subdict["Artist"] = theArtist
+                subdict["Name"] = theName
                 subdict["Slice"] = False
                 returnDict = {}
                 returnDict[theTitle] = subdict
-                # {theTitle:{"Artist":theArtist,"Slice":Boolean}}
+                #print("returnDict: ",returnDict)
                 return returnDict
             else:
                 subdict = {}
                 subdict["Artist"] = theArtist
+                subdict["Name"] = theName
                 subdict["Slice"] = True
                 returnDict = {}
                 returnDict[theTitle] = subdict
+                #print("returnDict: ",returnDict)
                 return returnDict
         else:
             cmd(command, sleep)  # 错误就重来
 
     k = 0
-    q = 0
-    qpstr = []
     allDict = {}
     for files in dirs:
         matchObj = re.match(r'(.*).mp3', files, re.M | re.I)
         if matchObj:
             print(k+1, ": ", matchObj.group())
             command = "ffprobe -v quiet -of json -show_format "+'"'+matchObj.group()+'"'
-            # theReturn={theTitle:{"Artist":theArtist,"Slice":Boolean}}
-            theReturn += cmd(command, 0.4)
-            for name in theReturn:
-                allDict[name] = theReturn[name]
+            # theReturn={theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean}}
+            theReturn = None
+            while theReturn == None:
+                theReturn = cmd(command, 0.4)#theReturn 有时会变为空值,
+            try:
+                for name in theReturn:
+                    allDict[name] = theReturn[name]
+                    k += 1
+            except TypeError:
+                print(theReturn)
+                input("TypeError...Please press Enter and retry...")
+    #print("allDict:", allDict)
     return allDict
 
 
 def main():
     dirs = os.listdir(os.getcwd())
-    allMusicInDict=probe(dirs)
-    musicConverter(allMusicInDict)
+    i=input("是否自动生成js?(Y/n):")
+    if i not in "Nn" or i=="":
+        allMusicInDict = probe(dirs)
+        musicConverter(allMusicInDict)
     lrcEncodingConvertToUTF8(dirs)
     input("按回车键退出...\n")
     print("那,再见咯！")
-    exit()
+    exit(0)
 
 
 ###
