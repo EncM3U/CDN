@@ -26,6 +26,6 @@ for %a in ("*.flac") do ffmpeg -i "%a" -b:a 1000k "%~na.mp3" && for %a in ("*.mp
 ```
 
 ```bash
-ffprobe -of json -show_format example.mp3
+ffprobe -v quiet -of json -show_format example.mp3
 
 ```
