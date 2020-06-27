@@ -25,7 +25,7 @@ def musicConverter(allMusicInDict):
                 allMusicInDict[keys]["Name"].replace(
                     ".mp3", "")+'(280k).mp3"'
             print("以280k码率重编码", keys)
-            # print(command)
+            print(command)
             subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE, encoding="utf-8")
             time.sleep(8)  # 等ffmpeg运行
