@@ -34,7 +34,7 @@ def musicConverter(allMusicInDict):
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
-                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3"',
+                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
                     'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
                     'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
                 }
