@@ -234,12 +234,12 @@ def probe(dirs):
                     if KeObj:
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
-                        subdict["Name"] = KeObj.group(0)
-                        #print("============",KeObj.group(0))
+                        subdict["Name"] = KeObj.group()
+                        print("============",subdict["Name"])
                         subdict["Slice"] = False
                         returnDict = {}
                         returnDict[KeObj.group(2)] = subdict
-                        #print("returnDict: ",returnDict)
+                        print("keObj returnDict: ",returnDict)
                         return returnDict
                 else:
                     KeObj = re.match(r'(.*) - (.*?).mp3',
@@ -247,7 +247,7 @@ def probe(dirs):
                     if KeObj:
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
-                        subdict["Name"] = KeObj.group(0)
+                        subdict["Name"] = KeObj.group()
                         #print("============",KeObj.group(0))
                         subdict["Slice"] = True
                         returnDict = {}
