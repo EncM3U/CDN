@@ -31,6 +31,7 @@ def musicConverter(allMusicInDict):
             time.sleep(8)  # 等ffmpeg运行
             if subp.poll() == 0:
                 print(subp.communicate()[0])
+                print(allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3')
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
@@ -42,6 +43,21 @@ def musicConverter(allMusicInDict):
                 k += 1
                 print(allMusicInDict[keys]["Name"])
                 print(data)
+            else:
+                print(subp.communicate()[0])
+                print("else:",allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3')
+                data = {
+                    'name': keys,
+                    'artist': allMusicInDict[keys]["Artist"],
+                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
+                    'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                    'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                }
+                strs = strs + str(data) + ","
+                k += 1
+                print(allMusicInDict[keys]["Name"])
+                print(data)
+
 
         else:
             data = {
@@ -219,6 +235,7 @@ def probe(dirs):
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
                         subdict["Name"] = KeObj.group(0)
+                        #print("============",KeObj.group(0))
                         subdict["Slice"] = False
                         returnDict = {}
                         returnDict[KeObj.group(2)] = subdict
@@ -231,7 +248,7 @@ def probe(dirs):
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
                         subdict["Name"] = KeObj.group(0)
-                        print("============",KeObj.group(0))
+                        #print("============",KeObj.group(0))
                         subdict["Slice"] = True
                         returnDict = {}
                         returnDict[KeObj.group(2)] = subdict
