@@ -234,12 +234,12 @@ def probe(dirs):
                                      matchObj, re.M | re.I)
                     if KeObj:
                         subdict = {}
-                        subdict["Artist"] = KeObj.group(1)
+                        subdict["Artist"] = KeObj.group(1).replace("_","")
                         subdict["Name"] = KeObj.group()
                         print("============", subdict["Name"])
                         subdict["Slice"] = False
                         returnDict = {}
-                        returnDict[KeObj.group(2)] = subdict
+                        returnDict[KeObj.group(2).replace("_","")] = subdict
                         print("keObj returnDict: ", returnDict)
                         return returnDict
                 else:
@@ -247,12 +247,12 @@ def probe(dirs):
                                      matchObj, re.M | re.I)
                     if KeObj:
                         subdict = {}
-                        subdict["Artist"] = KeObj.group(1)
+                        subdict["Artist"] = KeObj.group(1).replace("_","")
                         subdict["Name"] = KeObj.group()
                         # print("============",KeObj.group(0))
                         subdict["Slice"] = True
                         returnDict = {}
-                        returnDict[KeObj.group(2)] = subdict
+                        returnDict[KeObj.group(2).replace("_","")] = subdict
                         #print("returnDict: ",returnDict)
                         return returnDict
 
