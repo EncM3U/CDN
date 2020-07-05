@@ -21,9 +21,9 @@ def musicConverter(allMusicInDict):
     # {theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean},theTitle:{"Artist":theArtist,"Name":theName,"Slice":Boolean}}
     for keys in allMusicInDict:
         if allMusicInDict[keys]["Slice"]:
-            command = "ffmpeg -i "+'"'+allMusicInDict[keys]["Name"]+'"'+' -b:a 280k --maxrate 300k "' + \
-                allMusicInDict[keys]["Name"].replace(
-                    ".mp3", "")+'(280k).mp3"'
+            command = "ffmpeg -i "+'"' + \
+                allMusicInDict[keys]["Name"]+'"'+' -b:a 280k --maxrate 300k "' + \
+                allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3"'
             print("以280k码率重编码", keys)
             print(command)
             subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
@@ -31,13 +31,13 @@ def musicConverter(allMusicInDict):
             time.sleep(8)  # 等ffmpeg运行
             if subp.poll() == 0:
                 print(subp.communicate()[0])
-                print(allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3')
+                #print(allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3')
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
-                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
-                    'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
-                    'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                    'url': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
+                    'cover': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                    'lrc': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
                 }
                 strs = strs + str(data) + ","
                 k += 1
@@ -45,33 +45,34 @@ def musicConverter(allMusicInDict):
                 print(data)
             else:
                 print(subp.communicate()[0])
-                print("else:",allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3')
+                print("else:", allMusicInDict[keys]["Name"].replace(
+                    ".mp3", "")+'(280k).mp3')
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
-                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
-                    'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
-                    'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                    'url': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
+                    'cover': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                    'lrc': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
                 }
                 strs = strs + str(data) + ","
                 k += 1
                 print(allMusicInDict[keys]["Name"])
                 print(data)
 
-
         else:
             data = {
                 'name': keys,
                 'artist': allMusicInDict[keys]["Artist"],
-                'url': base+allMusicInDict[keys]["Name"],
-                'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
-                'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                'url': 'base+'+allMusicInDict[keys]["Name"],
+                'cover': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                'lrc': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
             }
             strs = strs + str(data) + ","
             k += 1
 
     if k != 0:
         js = """
+        var base ="""+base+"""
         var ap = new APlayer({
             container: document.getElementById('aplayer'),
             mini: false,
@@ -117,7 +118,7 @@ def musicConverter(allMusicInDict):
         jsfixed = js.replace("listFolded: false", "listFolded: true")
         js = ""
         jsfixed = jsfixed.replace("autoplay: true", "autoplay: false")
-        jsfixed = jsfixed.replace("autoplay: true", "autoplay: false")
+        jsfixed = jsfixed.replace("fixed: false", "fixed:true")
         fixed = open('aplayerMainFixedController.js',
                      mode='w', encoding='utf-8')
         fixed.write(jsfixed)
@@ -155,7 +156,7 @@ def lrcEncodingConvertToUTF8(dirs):
                               matchObj.group(), ',try decoding it manually...')
                         enc = ""
 
-                        for encmanually in ["gb18030","ansi", "gbk", "gb2312", "utf-8", "euc-jp", "utf-16"]:
+                        for encmanually in ["gb18030", "ansi", "gbk", "gb2312", "utf-8", "euc-jp", "utf-16"]:
                             try:
                                 print("    Try decoding the lrc file by",
                                       encmanually, "...")
@@ -235,11 +236,11 @@ def probe(dirs):
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
                         subdict["Name"] = KeObj.group()
-                        print("============",subdict["Name"])
+                        print("============", subdict["Name"])
                         subdict["Slice"] = False
                         returnDict = {}
                         returnDict[KeObj.group(2)] = subdict
-                        print("keObj returnDict: ",returnDict)
+                        print("keObj returnDict: ", returnDict)
                         return returnDict
                 else:
                     KeObj = re.match(r'(.*) - (.*?).mp3',
@@ -248,7 +249,7 @@ def probe(dirs):
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1)
                         subdict["Name"] = KeObj.group()
-                        #print("============",KeObj.group(0))
+                        # print("============",KeObj.group(0))
                         subdict["Slice"] = True
                         returnDict = {}
                         returnDict[KeObj.group(2)] = subdict
