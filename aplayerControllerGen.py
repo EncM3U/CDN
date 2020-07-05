@@ -156,7 +156,7 @@ def lrcEncodingConvertToUTF8(dirs):
                               matchObj.group(), ',try decoding it manually...')
                         enc = ""
 
-                        for encmanually in ["gb18030", "ansi", "gbk", "gb2312", "utf-8", "euc-jp", "utf-16"]:
+                        for encmanually in ["gbk","utf-16", "gb2312","gb18030", "ansi","utf-8", "euc-jp"]:
                             try:
                                 print("    Try decoding the lrc file by",
                                       encmanually, "...")
