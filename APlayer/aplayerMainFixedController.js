@@ -1,8 +1,7 @@
 
         var ap = new APlayer({
             container: document.getElementById('aplayer'),
-            mini: false,
-            fixed:true,
+            fixed: true,
             autoplay: false,
             theme: '#FADFA3',
             loop: 'all',

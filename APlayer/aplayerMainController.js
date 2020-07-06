@@ -2,7 +2,6 @@
         var ap = new APlayer({
             container: document.getElementById('aplayer'),
             mini: false,
-            fixed: false,
             autoplay: true,
             theme: '#FADFA3',
             loop: 'all',
