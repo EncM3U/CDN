@@ -35,9 +35,9 @@ def musicConverter(allMusicInDict):
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
-                    'url': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
-                    'cover': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
-                    'lrc': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
+                    'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                    'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
                 }
                 strs = strs + str(data) + ","
                 k += 1
@@ -50,9 +50,9 @@ def musicConverter(allMusicInDict):
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
-                    'url': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
-                    'cover': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
-                    'lrc': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                    'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
+                    'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                    'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
                 }
                 strs = strs + str(data) + ","
                 k += 1
@@ -63,16 +63,15 @@ def musicConverter(allMusicInDict):
             data = {
                 'name': keys,
                 'artist': allMusicInDict[keys]["Artist"],
-                'url': 'base+'+allMusicInDict[keys]["Name"],
-                'cover': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
-                'lrc': 'base+'+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                'url': base+allMusicInDict[keys]["Name"],
+                'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
+                'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
             }
             strs = strs + str(data) + ","
             k += 1
 
     if k != 0:
         js = """
-        var base ="""+base+"""
         var ap = new APlayer({
             container: document.getElementById('aplayer'),
             mini: false,
