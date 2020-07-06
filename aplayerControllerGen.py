@@ -22,7 +22,7 @@ def musicConverter(allMusicInDict):
     for keys in allMusicInDict:
         if allMusicInDict[keys]["Slice"]:
             command = "ffmpeg -i "+'"' + \
-                allMusicInDict[keys]["Name"]+'"'+' -b:a 280k --maxrate 300k "' + \
+                allMusicInDict[keys]["Name"]+'"'+' -b:a 280k "' + \
                 allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3"'
             print("以280k码率重编码", keys)
             print(command)
@@ -46,7 +46,7 @@ def musicConverter(allMusicInDict):
             else:
                 print(subp.communicate()[0])
                 print("else:", allMusicInDict[keys]["Name"].replace(
-                    ".mp3", "")+'(280k).mp3')
+                    ".mp3", "")+'(300k).mp3')
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
