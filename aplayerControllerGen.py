@@ -24,14 +24,14 @@ def musicConverter(allMusicInDict):
             command = "ffmpeg -i "+'"' + \
                 allMusicInDict[keys]["Name"]+'"'+' -b:a 280k "' + \
                 allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3"'
-            print("以280k码率重编码", keys)
-            print(command)
+            print("正在以280k码率重编码...", keys)
+            #print(command)
             subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE, encoding="utf-8")
             time.sleep(8)  # 等ffmpeg运行
             if subp.poll() == 0:
-                print(subp.communicate()[0])
-                #print(allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3')
+                print("subp.communicate()[0]",subp.communicate()[0])
+                print("subp.poll()=0: "+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3')
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
@@ -46,7 +46,7 @@ def musicConverter(allMusicInDict):
             else:
                 print(subp.communicate()[0])
                 print("else:", allMusicInDict[keys]["Name"].replace(
-                    ".mp3", "")+'(300k).mp3')
+                    ".mp3", "")+'(280k).mp3')
                 data = {
                     'name': keys,
                     'artist': allMusicInDict[keys]["Artist"],
@@ -56,8 +56,8 @@ def musicConverter(allMusicInDict):
                 }
                 strs = strs + str(data) + ","
                 k += 1
-                print(allMusicInDict[keys]["Name"])
-                print(data)
+                #print(allMusicInDict[keys]["Name"])
+                #print(data)
 
         else:
             data = {
@@ -87,30 +87,7 @@ def musicConverter(allMusicInDict):
             listMaxHeight: 90,
             lrcType: 3,
             audio: ["""+strs+"""]
-            });
-        var colorThief = new ColorThief();
-        var image = new Image();
-        var xhr = new XMLHttpRequest();
-        var setTheme = (index) => {
-            if (!ap.list.audios[index].theme) {
-                xhr.onload = function(){
-                    let coverUrl = URL.createObjectURL(this.response);
-                    image.onload = function(){
-                        let color = colorThief.getColor(image);
-                        ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
-                        URL.revokeObjectURL(coverUrl)
-                        };
-                        image.src = coverUrl;
-                    }
-                    xhr.open('GET', ap.list.audios[index].cover, true);
-                    xhr.responseType = 'blob';
-                    xhr.send();
-                }
-            };
-            setTheme(ap.list.index);
-            ap.on('listswitch', (index) => {
-            setTheme(index);
-        });"""
+            });"""
         f = open('aplayerMainController.js', mode='w', encoding='utf-8')
         f.write(js)
         f.close()
@@ -235,11 +212,11 @@ def probe(dirs):
                         subdict = {}
                         subdict["Artist"] = KeObj.group(1).replace("_","")
                         subdict["Name"] = KeObj.group()
-                        print("============", subdict["Name"])
+                        #print("============", subdict["Name"])
                         subdict["Slice"] = False
                         returnDict = {}
                         returnDict[KeObj.group(2).replace("_","")] = subdict
-                        print("keObj returnDict: ", returnDict)
+                        #print("keObj returnDict: ", returnDict)
                         return returnDict
                 else:
                     KeObj = re.match(r'(.*) - (.*?).mp3',
