@@ -75,7 +75,6 @@ def musicConverter(allMusicInDict):
         var ap = new APlayer({
             container: document.getElementById('aplayer'),
             mini: false,
-            fixed: false,
             autoplay: true,
             theme: '#FADFA3',
             loop: 'all',
@@ -94,7 +93,7 @@ def musicConverter(allMusicInDict):
         jsfixed = js.replace("listFolded: false", "listFolded: true")
         js = ""
         jsfixed = jsfixed.replace("autoplay: true", "autoplay: false")
-        jsfixed = jsfixed.replace("fixed: false", "fixed:true")
+        jsfixed = jsfixed.replace("mini: false", "fixed: true")
         fixed = open('aplayerMainFixedController.js',
                      mode='w', encoding='utf-8')
         fixed.write(jsfixed)
