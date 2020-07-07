@@ -83,7 +83,7 @@ def musicConverter(allMusicInDict):
             volume: 0.7,
             mutex: true,
             listFolded: false,
-            listMaxHeight: 10,
+            listMaxHeight: 90,
             lrcType: 3,
             audio: ["""+strs+"""]
             });"""
