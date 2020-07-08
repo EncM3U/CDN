@@ -38,6 +38,7 @@ def musicConverter(allMusicInDict):
                     'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
                     'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
                     'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                    'album':allMusicInDict[keys]["Album"],
                 }
                 strs = strs + str(data) + ","
                 k += 1
@@ -53,6 +54,7 @@ def musicConverter(allMusicInDict):
                     'url': base+allMusicInDict[keys]["Name"].replace(".mp3", "")+'(280k).mp3',
                     'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
                     'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                    'album':allMusicInDict[keys]["Album"],
                 }
                 strs = strs + str(data) + ","
                 k += 1
@@ -66,6 +68,7 @@ def musicConverter(allMusicInDict):
                 'url': base+allMusicInDict[keys]["Name"],
                 'cover': base+allMusicInDict[keys]["Name"].replace(".mp3", ".jpg"),
                 'lrc': base+allMusicInDict[keys]["Name"].replace(".mp3", ".lrc"),
+                'album':allMusicInDict[keys]["Album"],
             }
             strs = strs + str(data) + ","
             k += 1
@@ -201,6 +204,8 @@ def probe(dirs):
                     "format"]["tags"]["artist"])
                 theName = str(json.loads(subp.communicate()[0])[
                     "format"]["filename"])
+                theAlbum = str(json.loads(subp.communicate()[0])[
+                    "format"]["tags"]["album"])
                 # print("size:", json.loads(subp.communicate()[0])["format"]["size"])
             except KeyError:
                 print("[Warning!]KeyError Caught at", matchObj)
@@ -235,6 +240,7 @@ def probe(dirs):
                 subdict = {}
                 subdict["Artist"] = theArtist
                 subdict["Name"] = theName
+                subdict["Album"] = theAlbum
                 subdict["Slice"] = False
                 returnDict = {}
                 returnDict[theTitle] = subdict
@@ -244,6 +250,7 @@ def probe(dirs):
                 subdict = {}
                 subdict["Artist"] = theArtist
                 subdict["Name"] = theName
+                subdict["Album"] = theAlbum
                 subdict["Slice"] = True
                 returnDict = {}
                 returnDict[theTitle] = subdict
