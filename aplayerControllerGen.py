@@ -87,7 +87,6 @@ def musicConverter(allMusicInDict):
             mutex: true,
             listFolded: false,
             listMaxHeight: 90,
-            lrcType: 3,
             audio: ["""+strs+"""]
             });"""
         f = open('aplayerMainController.js', mode='w', encoding='utf-8')
@@ -134,7 +133,7 @@ def lrcEncodingConvertToUTF8(dirs):
                               matchObj.group(), ',try decoding it manually...')
                         enc = ""
 
-                        for encmanually in ["gbk","utf-16", "gb2312","gb18030", "ansi","utf-8", "euc-jp"]:
+                        for encmanually in ["gbk","gb18030","ansi", "utf-16", "gb2312","utf-8", "euc-jp"]:
                             try:
                                 print("    Try decoding the lrc file by",
                                       encmanually, "...")
@@ -218,6 +217,7 @@ def probe(dirs):
                         subdict["Name"] = KeObj.group()
                         #print("============", subdict["Name"])
                         subdict["Slice"] = False
+                        subdict["Album"] = ""
                         returnDict = {}
                         returnDict[KeObj.group(2).replace("_","")] = subdict
                         #print("keObj returnDict: ", returnDict)
@@ -231,6 +231,7 @@ def probe(dirs):
                         subdict["Name"] = KeObj.group()
                         # print("============",KeObj.group(0))
                         subdict["Slice"] = True
+                        subdict["Album"] = ""
                         returnDict = {}
                         returnDict[KeObj.group(2).replace("_","")] = subdict
                         #print("returnDict: ",returnDict)
