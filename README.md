@@ -28,4 +28,9 @@ ffprobe -v quiet -of json -show_format example.mp3
 
 ```bash 
 mkvextract "i.mkv" tracks {TrackID}:{OutPutFile}
+```    
+
+
+```javascript
+ap.list.audios[ap.list["index"]]
 ```
