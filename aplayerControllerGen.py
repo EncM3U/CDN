@@ -91,34 +91,6 @@ def musicConverter(allMusicInDict):
             });
             var theLIST = ap.list.audios;
         ap.list["index"];
-        console.log(theLIST);
-        var ShowList = 0;
-        ap.on("listshow", function () {
-            ShowList = 1;
-            document.getElementById("aplayer").style = "top:0;position:fixed;overflow-y:auto;";
-        });
-        ap.on("listhide", function () {
-            ShowList = 0;
-            document.getElementById("aplayer").style = "top:1;position:fixed;overflow-y:auto;";
-        });
-        var miniswitcherON = 0;
-        document.getElementsByClassName("aplayer-miniswitcher")[0].onclick =
-            function () {
-                if (miniswitcherON == 0) {
-                    miniswitcherON = 1;; //现状态
-                    if (ShowList) {
-                        window.setTimeout(function () {
-                            document.getElementById("aplayer").style =
-                                "top:0;position:fixed;overflow-y:auto;";
-                        }, 300);
-                    } else {
-                        document.getElementById("aplayer").style = "top:1;position:fixed;overflow-y:auto;";
-                    }
-                } else {
-                    miniswitcherON = 0; //现状态
-                    document.getElementById("aplayer").style = "top:1;position:fixed;overflow-y:auto;";
-                }
-            };
         ap.on("loadstart", function () {
             if (ap.list.audios[ap.list["index"]].lrc == "" && (ap.list.audios[ap.list["index"]].cover == "" ||
                     ap.list.audios[ap.list["index"]].cover == undefined)) {
@@ -128,7 +100,7 @@ def musicConverter(allMusicInDict):
                 var Artist = theLIST[ap.list["index"]].artist;
                 axios.get('https://api.mochanbw.cn/QMapi/search', {
                         params: {
-                            key: Artist + " " + Name + " " + Album
+                            key: Artist + " " + Name// + " " + Album
                         }
                     })
                     .then(function (response) {
@@ -143,7 +115,7 @@ def musicConverter(allMusicInDict):
                                 }
                             })
                             .then(function (response) {
-                                theLIST[ap.list["index"]].lrc = response.data.data.lyric;
+                                theLIST[ap.list["index"]].lrc = response.data.data.trans!="" ? response.data.data.trans:response.data.data.lyric;
                                 let ID = ap.list["index"];
                                 ap.list.clear();
                                 ap.list.add(theLIST);
