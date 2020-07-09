@@ -85,20 +85,11 @@ def musicConverter(allMusicInDict):
             preload: 'auto',
             volume: 0.7,
             mutex: true,
+            lrcType: 1,
             listFolded: false,
             audio: ["""+strs+"""]
-            lrcType: 1,
             });
-            console.log('normal')
-            """
-        f = open('aplayerMainController.js', mode='w', encoding='utf-8')
-        f.write(js)
-        f.close()
-        jsfixed = js.replace("listFolded: false", "listFolded: true")
-        js = ""
-        jsfixed = jsfixed.replace("autoplay: true", "autoplay: false")
-        jsfixed = jsfixed.replace("mini: false", "fixed: true")
-        jsfixed = jsfixed.replace("console.log('normal')", """var theLIST = ap.list.audios;
+            var theLIST = ap.list.audios;
         ap.list["index"];
         console.log(theLIST);
         var ShowList = 0;
@@ -164,8 +155,15 @@ def musicConverter(allMusicInDict):
 
 
             }
-        });""")
-
+        });
+            """
+        f = open('aplayerMainController.js', mode='w', encoding='utf-8')
+        f.write(js)
+        f.close()
+        jsfixed = js.replace("listFolded: false", "listFolded: true")
+        js = ""
+        jsfixed = jsfixed.replace("autoplay: true", "autoplay: false")
+        jsfixed = jsfixed.replace("mini: false", "fixed: true")
         fixed = open('aplayerMainFixedController.js',
                      mode='w', encoding='utf-8')
         fixed.write(jsfixed)
