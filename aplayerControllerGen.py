@@ -76,58 +76,94 @@ def musicConverter(allMusicInDict):
     if k != 0:
         js = """
         var ap = new APlayer({
-            container: document.getElementById('aplayer'),
-            mini: false,
-            autoplay: true,
-            theme: '#FADFA3',
-            loop: 'all',
-            order: 'random',
-            preload: 'auto',
-            volume: 0.7,
-            mutex: true,
-            lrcType: 1,
-            listFolded: false,
-            audio: ["""+strs+"""]
-            });
-            var theLIST = ap.list.audios;
-        ap.list["index"];
-        ap.on("loadstart", function () {
-            if (ap.list.audios[ap.list["index"]].lrc == "" && (ap.list.audios[ap.list["index"]].cover == "" ||
-                    ap.list.audios[ap.list["index"]].cover == undefined)) {
-                console.log("undefine yes")
-                var Name = theLIST[ap.list["index"]].name;
-                var Album = theLIST[ap.list["index"]].album;
-                var Artist = theLIST[ap.list["index"]].artist;
-                axios.get('https://api.mochanbw.cn/QMapi/search', {
+    container: document.getElementById('aplayer'),
+    fixed: true,
+    autoplay: false,
+    theme: '#FADFA3',
+    loop: 'all',
+    order: 'random',
+    preload: 'auto',
+    volume: 0.7,
+    mutex: true,
+    lrcType: 1,
+    maxHeight:90,
+    listFolded: true,
+    audio: ["""+strs+"""var theLIST = ap.list.audios;
+ap.list["index"];
+ap.on("loadstart", function () {
+    if (ap.list.audios[ap.list["index"]].lrc == "" && (ap.list.audios[ap.list["index"]].cover == "" ||
+        ap.list.audios[ap.list["index"]].cover == undefined)) {
+        var pa = ap.audio.paused;
+        ap.pause()
+        console.log("undefine yes")
+        var Name = theLIST[ap.list["index"]].name;
+        var Album = theLIST[ap.list["index"]].album;
+        var Artist = theLIST[ap.list["index"]].artist;
+        axios.get('https://api.mochanbw.cn/QMapi/search', {
+                params: {
+                    key: Artist + " " + Name //+ " " + Album
+                }
+            })
+            .then(function (response) {
+                var theSongmid = response.data.data.list[0].songmid;
+                var theAlbummid = response.data.data.list[0].albummid;
+                theLIST[ap.list["index"]].cover =
+                    "https://y.gtimg.cn/music/photo_new/T002R300x300M000" + theAlbummid +
+                    ".jpg";
+                axios.get('https://api.mochanbw.cn/QMapi/lyric', {
                         params: {
-                            key: Artist + " " + Name// + " " + Album
+                            songmid: theSongmid
                         }
                     })
                     .then(function (response) {
-                        var theSongmid = response.data.data.list[0].songmid;
-                        var theAlbummid = response.data.data.list[0].albummid;
-                        theLIST[ap.list["index"]].cover =
-                            "https://y.gtimg.cn/music/photo_new/T002R300x300M000" + theAlbummid +
-                            ".jpg";
-                        axios.get('https://api.mochanbw.cn/QMapi/lyric', {
-                                params: {
-                                    songmid: theSongmid
-                                }
-                            })
-                            .then(function (response) {
-                                theLIST[ap.list["index"]].lrc = response.data.data.trans!="" ? response.data.data.trans:response.data.data.lyric;
-                                let ID = ap.list["index"];
-                                ap.list.clear();
-                                ap.list.add(theLIST);
-                                ap.list.switch(ID);
-
-                            });
+                        theLIST[ap.list["index"]].lrc = response.data.data.trans == "" ? response.data.data.lyric : response.data.data.trans;
+                        let ID = ap.list["index"];
+                        ap.list.clear();
+                        ap.list.add(theLIST);
+                        ap.list.switch(ID)
+                        ap.notice("加载完毕")
+                        if (pa) {
+                            ap.pause();
+                        } else {
+                            ap.play();
+                        }
+                        
 
                     });
 
+            });
 
+
+    }
+});
+
+/*var ShowList = 0;
+ap.on("listshow", function () {
+    ShowList = 1;
+    document.getElementById("aplayer").style = "top:0;position:fixed;overflow-y:auto;";
+});
+ap.on("listhide", function () {
+    ShowList = 0;
+    document.getElementById("aplayer").style = "top:1;position:fixed;overflow-y:auto;";
+});
+var miniswitcherON = 0;
+document.getElementsByClassName("aplayer-miniswitcher")[0].onclick =
+    function () {
+        if (miniswitcherON == 0) {
+            miniswitcherON = 1;; //现状态
+            if (ShowList) {
+                window.setTimeout(function () {
+                    document.getElementById("aplayer").style =
+                        "top:0;position:fixed;overflow-y:auto;";
+                }, 300);
+            } else {
+                document.getElementById("aplayer").style = "top:1;position:fixed;overflow-y:auto;";
             }
-        });
+        } else {
+            miniswitcherON = 0; //现状态
+            document.getElementById("aplayer").style = "top:1;position:fixed;overflow-y:auto;";
+        }
+    }; */
             """
         f = open('aplayerMainController.js', mode='w', encoding='utf-8')
         f.write(js)
